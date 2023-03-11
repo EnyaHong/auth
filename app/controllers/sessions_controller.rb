@@ -9,6 +9,8 @@ class SessionsController < ApplicationController
             #if they do, check that they know their password
             #if params["password"] == @user["password"]
             if BCrypt::Password.new(@user["password"]) == params["password"]    
+                cookies["monster"] = "me like cookies"
+                session["user_id"] = @user["id"]
                 #if they do, sent them in...
                 redirect_to "/companies"
             else
@@ -18,4 +20,10 @@ class SessionsController < ApplicationController
             redirect_to "/sessions_new"
         end
     end
+    
+    def destroy
+        session["user_id"] = nil
+        redirect_to "/sessions/new"
+    end 
+
 end
